@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://charity-backend-gcnw.onrender.com/api';
+let rawApiUrl = import.meta.env.VITE_API_URL || 'https://charity-backend-gcnw.onrender.com/api';
+// Normalize: Ensure the API URL always ends with '/api' (handling any trailing slashes)
+if (rawApiUrl && !rawApiUrl.endsWith('/api') && !rawApiUrl.endsWith('/api/')) {
+  rawApiUrl = rawApiUrl.replace(/\/$/, '') + '/api';
+}
+const API_URL = rawApiUrl;
 
 const api = axios.create({
   baseURL: API_URL,
