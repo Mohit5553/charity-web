@@ -434,6 +434,21 @@ const BookingManagement = ({ user, viewMode = 'form' }) => {
               </div>
             </div>
 
+            {/* Elegant Item Image preview placed OUTSIDE the grid to prevent overlaps */}
+            {shareCodes.find(s => s.code === formData.share_code)?.image && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '25px', padding: '15px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0', width: 'fit-content' }}>
+                <img 
+                  src={`http://localhost:5620/uploads/${shareCodes.find(s => s.code === formData.share_code).image}`} 
+                  alt="Selected Item" 
+                  style={{ width: '80px', height: '80px', borderRadius: '8px', objectFit: 'cover', border: '1px solid #cbd5e1' }} 
+                />
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', marginBottom: '4px', letterSpacing: '0.5px' }}>Selected Item Preview</div>
+                  <div style={{ fontSize: '15px', fontWeight: '700', color: '#0f172a' }}>{shareCodes.find(s => s.code === formData.share_code)?.name}</div>
+                </div>
+              </div>
+            )}
+
             <div className="share-table-section">
               <div className="table-header-row">
                 <h4>Table Name - booking</h4>

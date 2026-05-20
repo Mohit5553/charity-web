@@ -11,6 +11,7 @@ const emptyForm = {
   itemprice: '',
   itemcost: '',
   opening_stock: '',
+  item_image: null,
 };
 
 const InventoryTable = ({ user }) => {
@@ -58,10 +59,21 @@ const InventoryTable = ({ user }) => {
     e.preventDefault();
     setSaving(true);
     try {
+      const dataToSend = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (formData[key] !== null && formData[key] !== '') {
+          dataToSend.append(key, formData[key]);
+        }
+      });
+      
+      if (!editingId) {
+        dataToSend.append('company_id', CHARITY_COMP_ID);
+      }
+
       if (editingId) {
-        await itemService.update(editingId, formData);
+        await itemService.update(editingId, dataToSend);
       } else {
-        await itemService.create({ ...formData, company_id: CHARITY_COMP_ID });
+        await itemService.create(dataToSend);
       }
       setShowForm(false);
       setFormData(emptyForm);
@@ -80,6 +92,7 @@ const InventoryTable = ({ user }) => {
       item_name: item.item_name || '',
       item_description: item.item_description || '',
       itemprice: item.itemprice || '',
+      item_image: null,
     });
     setEditingId(item.id);
     setShowForm(true);
@@ -155,6 +168,11 @@ const InventoryTable = ({ user }) => {
               <input type="text" placeholder="Optional description" value={formData.item_description}
                 onChange={e => setFormData({ ...formData, item_description: e.target.value })} />
             </div>
+            <div className="inv-form-group">
+              <label>Image</label>
+              <input type="file" accept="image/*" 
+                onChange={e => setFormData({ ...formData, item_image: e.target.files[0] })} />
+            </div>
             {!editingId && (
               <>
                 <div className="inv-form-group">
@@ -200,7 +218,7 @@ const InventoryTable = ({ user }) => {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Image</th>
                 <th>Code</th>
                 <th>Description</th>
                 <th>Price</th>
@@ -215,7 +233,15 @@ const InventoryTable = ({ user }) => {
                 <tr><td colSpan={isAdmin ? 6 : 5} className="no-data">No items found.</td></tr>
               ) : filteredItems.map(item => (
                 <tr key={item.id}>
-                  <td>{item.id}</td>
+                  <td>
+                    {item.item_image ? (
+                      <img src={`http://localhost:5620/uploads/${item.item_image}`} alt={item.item_name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                    ) : (
+                      <div style={{ width: '40px', height: '40px', backgroundColor: '#e2e8f0', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ fontSize: '10px', color: '#94a3b8' }}>No Img</span>
+                      </div>
+                    )}
+                  </td>
                   <td><span className="code-badge">{item.item_code}</span></td>
                   <td>{item.item_name || item.itemdesc}</td>
                   <td><strong style={{ color: '#059669' }}>{item.itemprice || '0.00'}</strong></td>

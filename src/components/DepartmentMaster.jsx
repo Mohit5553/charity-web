@@ -13,7 +13,8 @@ const DepartmentMaster = () => {
     deptdesclong: '',
     status: 1,
     company_id: 26,
-    location_id: 30
+    location_id: 30,
+    dept_image: null
   });
 
   useEffect(() => {
@@ -32,11 +33,18 @@ const DepartmentMaster = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const dataToSend = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (formData[key] !== null && formData[key] !== '') {
+          dataToSend.append(key, formData[key]);
+        }
+      });
+      
       if (isEditing) {
-        await departmentMasterService.update(editId, formData);
+        await departmentMasterService.update(editId, dataToSend);
         alert("Department updated successfully!");
       } else {
-        await departmentMasterService.create(formData);
+        await departmentMasterService.create(dataToSend);
         alert("Department created successfully!");
       }
       resetForm();
@@ -56,7 +64,8 @@ const DepartmentMaster = () => {
       deptdesclong: dept.deptdesclong || '',
       status: dept.status,
       company_id: dept.company_id || 26,
-      location_id: dept.location_id || 30
+      location_id: dept.location_id || 30,
+      dept_image: null
     });
   };
 
@@ -75,7 +84,7 @@ const DepartmentMaster = () => {
     setShowForm(false);
     setIsEditing(false);
     setEditId(null);
-    setFormData({ deptcode: '', deptname: '', deptdesclong: '', status: 1, company_id: 26, location_id: 30 });
+    setFormData({ deptcode: '', deptname: '', deptdesclong: '', status: 1, company_id: 26, location_id: 30, dept_image: null });
   };
 
   return (
@@ -147,6 +156,16 @@ const DepartmentMaster = () => {
                   <option value={0}>Inactive</option>
                 </select>
               </div>
+
+              <div className="input-group">
+                <label style={{ fontSize: '13px', color: '#64748b', fontWeight: '500', display: 'block', marginBottom: '6px' }}>Department Image</label>
+                <input 
+                  type="file"
+                  accept="image/*"
+                  onChange={e => setFormData({ ...formData, dept_image: e.target.files[0] })} 
+                  style={{ width: '100%', padding: '7px 12px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '14px' }}
+                />
+              </div>
             </div>
             <button type="submit" className="submit-btn" style={{ padding: '12px 24px', backgroundColor: '#059669', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
               {isEditing ? "Update Department Record" : "Save Department Record"}
@@ -160,7 +179,7 @@ const DepartmentMaster = () => {
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #e2e8f0', background: '#f8fafc' }}>
-                <th style={{ padding: '15px' }}>ID</th>
+                <th style={{ padding: '15px' }}>Image</th>
                 <th style={{ padding: '15px' }}>Code</th>
                 <th style={{ padding: '15px' }}>Department Name</th>
                 <th style={{ padding: '15px' }}>Description</th>
@@ -171,7 +190,15 @@ const DepartmentMaster = () => {
             <tbody>
               {departments.length > 0 ? departments.map(d => (
                 <tr key={d.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  <td style={{ padding: '15px', color: '#64748b' }}>#{d.id}</td>
+                  <td style={{ padding: '15px' }}>
+                    {d.dept_image ? (
+                      <img src={`http://localhost:5620/uploads/${d.dept_image}`} alt={d.deptname} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                    ) : (
+                      <div style={{ width: '40px', height: '40px', backgroundColor: '#e2e8f0', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ fontSize: '10px', color: '#94a3b8' }}>No Img</span>
+                      </div>
+                    )}
+                  </td>
                   <td style={{ padding: '15px', color: '#0f172a', fontWeight: '500' }}><code>{d.deptcode}</code></td>
                   <td style={{ padding: '15px', fontWeight: '600', color: '#0f172a' }}>{d.deptname}</td>
                   <td style={{ padding: '15px', color: '#475569' }}>{d.deptdesclong || '-'}</td>
