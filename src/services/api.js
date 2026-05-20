@@ -6,6 +6,7 @@ if (rawApiUrl && !rawApiUrl.endsWith('/api') && !rawApiUrl.endsWith('/api/')) {
   rawApiUrl = rawApiUrl.replace(/\/$/, '') + '/api';
 }
 const API_URL = rawApiUrl;
+export const UPLOADS_BASE_URL = API_URL.replace(/\/api\/?$/, '');
 
 const api = axios.create({
   baseURL: API_URL,

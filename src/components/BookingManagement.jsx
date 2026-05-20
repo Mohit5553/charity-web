@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Trash2, X, Users, CreditCard, Calendar, CheckCircle, Search, Edit3, MoreVertical, Eye, FileText } from 'lucide-react';
 import { useParams } from 'react-router-dom';
-import { bookingService, customerService, qurbaniDateService } from '../services/api';
+import { bookingService, customerService, qurbaniDateService, UPLOADS_BASE_URL } from '../services/api';
 
 const BookingManagement = ({ user, viewMode = 'form' }) => {
   const { year } = useParams();
@@ -438,7 +438,7 @@ const BookingManagement = ({ user, viewMode = 'form' }) => {
             {shareCodes.find(s => s.code === formData.share_code)?.image && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '25px', padding: '15px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0', width: 'fit-content' }}>
                 <img 
-                  src={`http://localhost:5620/uploads/${shareCodes.find(s => s.code === formData.share_code).image}`} 
+                  src={`${UPLOADS_BASE_URL}/uploads/${shareCodes.find(s => s.code === formData.share_code).image}`} 
                   alt="Selected Item" 
                   style={{ width: '80px', height: '80px', borderRadius: '8px', objectFit: 'cover', border: '1px solid #cbd5e1' }} 
                 />

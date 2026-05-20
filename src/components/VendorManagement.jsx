@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserPlus, Pencil, Trash2, X, Plus } from 'lucide-react';
-import { vendorService } from '../services/api';
+import { vendorService, UPLOADS_BASE_URL } from '../services/api';
 
 const VendorManagement = () => {
   const [vendors, setVendors] = useState([]);
@@ -129,7 +129,7 @@ const VendorManagement = () => {
                 <tr key={v.id}>
                   <td>
                     {v.profile_image ? (
-                      <img src={`http://localhost:5620/uploads/${v.profile_image}`} alt={v.firstname} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%' }} />
+                      <img src={`${UPLOADS_BASE_URL}/uploads/${v.profile_image}`} alt={v.firstname} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%' }} />
                     ) : (
                       <div style={{ width: '40px', height: '40px', backgroundColor: '#e2e8f0', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <span style={{ fontSize: '10px', color: '#94a3b8' }}>No Img</span>

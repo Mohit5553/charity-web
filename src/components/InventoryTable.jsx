@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { itemService } from '../services/api';
+import { itemService, UPLOADS_BASE_URL } from '../services/api';
 import { Plus, Edit3, Trash2, X, Save, Package } from 'lucide-react';
 
 const CHARITY_COMP_ID = 26;
@@ -235,7 +235,7 @@ const InventoryTable = ({ user }) => {
                 <tr key={item.id}>
                   <td>
                     {item.item_image ? (
-                      <img src={`http://localhost:5620/uploads/${item.item_image}`} alt={item.item_name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                      <img src={`${UPLOADS_BASE_URL}/uploads/${item.item_image}`} alt={item.item_name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
                     ) : (
                       <div style={{ width: '40px', height: '40px', backgroundColor: '#e2e8f0', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <span style={{ fontSize: '10px', color: '#94a3b8' }}>No Img</span>

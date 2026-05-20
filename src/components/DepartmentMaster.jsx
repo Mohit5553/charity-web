@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Briefcase, Pencil, Trash2, X, Plus } from 'lucide-react';
-import { departmentMasterService } from '../services/api';
+import { departmentMasterService, UPLOADS_BASE_URL } from '../services/api';
 
 const DepartmentMaster = () => {
   const [departments, setDepartments] = useState([]);
@@ -192,7 +192,7 @@ const DepartmentMaster = () => {
                 <tr key={d.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                   <td style={{ padding: '15px' }}>
                     {d.dept_image ? (
-                      <img src={`http://localhost:5620/uploads/${d.dept_image}`} alt={d.deptname} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                      <img src={`${UPLOADS_BASE_URL}/uploads/${d.dept_image}`} alt={d.deptname} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
                     ) : (
                       <div style={{ width: '40px', height: '40px', backgroundColor: '#e2e8f0', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <span style={{ fontSize: '10px', color: '#94a3b8' }}>No Img</span>
